@@ -39,11 +39,16 @@ impl Default for Person {
 //    `usize` as the age.
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
-
-// I AM NOT DONE
-
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let sv:Vec<&str> =s.split(',').collect();
+        if s.len() == 0 || sv.len()!=2 ||sv[0].len()==0 ||sv[1].len()==0 {
+            return Person::default();
+        }
+        match sv[1].parse::<usize>(){
+            Ok(a) => return Person{name:String::from(sv[0]),age:a},
+            Err(_) => return Person::default(),
+        }
     }
 }
 
