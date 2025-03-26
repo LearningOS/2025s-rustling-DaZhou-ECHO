@@ -2,8 +2,6 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
-
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
 use std::vec::*;
@@ -69,14 +67,45 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+	pub fn merge(mut list_a:LinkedList<T>,mut list_b:LinkedList<T>) -> Self
+    where T:Copy + PartialOrd
 	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+		let mut list = LinkedList::new();
+        let len = list_a.length + list_b.length;
+        let len_a :i32= list_a.length as i32;
+        let len_b :i32= list_b.length as i32;
+        let mut idx_a :i32= 0;
+        let mut idx_b:i32 = 0;
+        // if len_a > len_b{
+        //     list.add(*(list_a.get(idx_a).unwrap()));
+        //     idx_a+=1;
+        // }
+        for i in 0..len{
+            // let a = list_a.get(idx_a).unwrap_or(&0);
+            // let b = list_b.get(idx_a).unwrap_or(&0);
+            // if *a > *b {
+            //     list.add(*a);
+            // }else{
+            //     list.add(*b);
+            // }
+            if idx_a!=len_a && idx_b!=len_b  {
+                if *(list_a.get(idx_a).unwrap()) < *(list_b.get(idx_b).unwrap()){
+                    list.add(*(list_a.get(idx_a).unwrap()));
+                    idx_a+=1;
+                }else{
+                    list.add(*(list_b.get(idx_b).unwrap()));
+                    idx_b+=1;
+                }
+            }else if idx_a==len_a{
+                list.add(*(list_b.get(idx_b).unwrap()));
+                idx_b+=1;
+            }else{
+                list.add(*(list_a.get(idx_a).unwrap()));
+                idx_a+=1;
+            }
         }
+        //TODO
+		list
 	}
 }
 

@@ -30,6 +30,21 @@ impl Graph for UndirectedGraph {
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
+        let (src, dest, weight) = edge;
+        let s1 = src.to_string();
+        let s2 = dest.to_string();
+        
+        // 处理 s1 -> s2 的边
+        self.adjacency_table
+            .entry(s1.clone())
+            .or_insert_with(Vec::new)
+            .push((s2.clone(), weight));
+        
+        // 处理 s2 -> s1 的边（如果是无向图）
+        self.adjacency_table
+            .entry(s2)
+            .or_insert_with(Vec::new)
+            .push((s1, weight));
     }
 }
 pub trait Graph {

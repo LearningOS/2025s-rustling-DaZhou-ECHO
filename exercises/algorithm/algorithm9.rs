@@ -2,7 +2,6 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -37,7 +36,38 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        if self.count==0{
+            self.count+=1;
+            self.items=Vec::new();
+            self.items.push(value);
+        }else{
+            let mut idx = 0;
+            loop{
+                if idx == self.count{
+                self.items.insert(idx,value);break;
+                }
+                if (self.comparator)(&value,self.items.get(idx).unwrap()){
+                    idx+=1;
+                }else{
+                    self.items.insert(idx,value);break;
+                }
+
+                // if idx == self.count-1{
+                //     self.items.push(value);break;
+                // }else if (self.comparator)(&value,self.items.get(idx).unwrap()){
+                //     idx+=1;
+                // }else{
+                //     self.items.insert(idx,value);break;
+                // }
+            }
+            self.count+=1;
+            // for (i , v) in self.items.iter().enumerate(){
+                // if (self.comparator)(&value,v){
+                //     self.items.insert(i,value);
+                //     break;
+                // }
+            // }
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -85,7 +115,13 @@ where
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+		match self.len(){
+            0 => None,
+            _ => {
+                self.count-=1;
+                self.items.pop()
+            },
+        }
     }
 }
 
@@ -126,10 +162,14 @@ mod tests {
     fn test_min_heap() {
         let mut heap = MinHeap::new();
         heap.add(4);
+        println!("***************{:?}", heap.items);
         heap.add(2);
+        println!("***************{:?}", heap.items);
         heap.add(9);
+        println!("***************{:?}", heap.items);
         heap.add(11);
         assert_eq!(heap.len(), 4);
+        println!("***************{:?}", heap.items);
         assert_eq!(heap.next(), Some(2));
         assert_eq!(heap.next(), Some(4));
         assert_eq!(heap.next(), Some(9));
@@ -145,6 +185,7 @@ mod tests {
         heap.add(9);
         heap.add(11);
         assert_eq!(heap.len(), 4);
+        println!("***************{:?}", heap.items);
         assert_eq!(heap.next(), Some(11));
         assert_eq!(heap.next(), Some(9));
         assert_eq!(heap.next(), Some(4));

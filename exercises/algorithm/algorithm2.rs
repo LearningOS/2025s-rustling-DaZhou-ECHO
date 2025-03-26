@@ -2,7 +2,6 @@
 	double linked list reverse
 	This problem requires you to reverse a doubly linked list
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -25,19 +24,19 @@ impl<T> Node<T> {
     }
 }
 #[derive(Debug)]
-struct LinkedList<T> {
+struct LinkedList<T> where T:Clone{
     length: u32,
     start: Option<NonNull<Node<T>>>,
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T> Default for LinkedList<T> where T:Clone{
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T> LinkedList<T> where T:Clone{
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -73,13 +72,37 @@ impl<T> LinkedList<T> {
         }
     }
 	pub fn reverse(&mut self){
-		// TODO
-	}
-}
+        // let len = self.length;
+        // let mut n = LinkedList::new();
+        // for i in 0..len{
+        //     match self.get((len - i-1).try_into().unwrap()){
+        //         Some(a) => {n.add(a.clone())},
+        //         None => (),
+        //     }
+        // }
+        // *self = n;
+		let mut list = LinkedList::new();
+        let len = self.length;
+        for i in 0..len{
+            // list.add(self.get(i.try_into().unwrap()).unwrap());
+            match self.get((len -i -1).try_into().unwrap()){
+                Some(a) => {list.add(a.clone())},
+                None => (),
+            }
+	    }
+        *self = list;
+        // self.length=0;
+        // self.start=None;
+        // self.end=None;
+        // for i in 0..len{
+        //     self.add(self.get(i.try_into().unwrap().unwrap()));
+        // }
+
+}}
 
 impl<T> Display for LinkedList<T>
 where
-    T: Display,
+    T: Display +Clone,
 {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         match self.start {
@@ -91,7 +114,7 @@ where
 
 impl<T> Display for Node<T>
 where
-    T: Display,
+    T: Display +Clone,
 {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         match self.next {
